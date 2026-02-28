@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lash Loyalty Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom animations for the UI */
+        @keyframes pop {
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-50 to-rose-100 min-h-screen flex items-center justify-center p-4 font-sans text-slate-800">
+
+    <div class="bg-white rounded-3xl shadow-xl border border-rose-50 w-full max-w-md p-6 sm:p-8 relative overflow-hidden">
+        
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-rose-600 mb-1">Lash Loyalty Tracker</h1>
+            <p class="text-sm text-slate-500">Every 5th visit gets 50% off</p>
+        </div>
+
+        <!-- Error Message Container -->
+        <div id="errorMessage" class="hidden mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-xl border border-red-100 text-center transition-all">
+            Please enter a valid phone number.
+        </div>
+
+        <!-- Input Section -->
+        <div class="mb-6">
+            <label for="phone" class="block text-sm font-medium text-slate-600 mb-2">Client Phone Number</label>
+            <input type="tel" id="phone" placeholder="(555) 555-5555" 
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:border-transparent text-lg transition-all placeholder:text-slate-300"
+                onkeypress="handleKeyPress(event)">
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-3 mb-8">
+            <button onclick="logVisit()" class="flex-1 bg-rose-500 hover:bg-rose-600 text-white font-semibold py-3 px-4 rounded-xl transition-all active:scale-95 shadow-md shadow-rose-200">
+                Log Visit
+            </button>
+            <button onclick="checkStatus()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-xl transition-all active:scale-95">
+                Check Status
+            </button>
+        </div>
+
+        <!-- Results / Dashboard Area -->
+        <div id="dashboard" class="hidden animate-pop border-t border-slate-100 pt-6">
+            <div class="text-center mb-4">
+                <span class="text-sm font-medium text-slate-500 uppercase tracking-wider">Total Visits: <span id="totalVisits" class="text-rose-600 font-bold text-lg">0</span></span>
+            </div>
+
+            <!-- Punch Card Visualization -->
+            <div class="flex justify-between items-center mb-6 px-2">
+                <!-- Javascript will generate the punch holes here -->
+                <div id="punchHoles" class="flex w-full justify-between gap-2"></div>
+            </div>
+
+            <!-- Status / Reward Message -->
+            <div id="statusMessage" class="text-center p-4 rounded-xl font-medium">
+                <!-- Message injected via JS -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Data Management (Local Storage) ---
+        function getDatabase() {
+            try {
+                return JSON.parse(localStorage.getItem('lashClientsDB')) || {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function saveDatabase(db) {
+            localStorage.setItem('lashClientsDB', JSON.stringify(db));
+        }
+
+        // --- Utility Functions ---
+        function getPhoneNumber() {
+            // Strip out everything except numbers
+            const raw = document.getElementById('phone').value;
+            return raw.replace(/\D/g, '');
+        }
+
+        function showError(show, message = "Please enter a valid phone number.") {
+            const errorEl = document.getElementById('errorMessage');
+            if (show) {
+                errorEl.textContent = message;
+                errorEl.classList.remove('hidden');
+            } else {
+                errorEl.classList.add('hidden');
+            }
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                logVisit();
+            }
+        }
+
+        // --- Core Application Logic ---
+        function logVisit() {
+            const phone = getPhoneNumber();
+            if (phone.length < 7) {
+                showError(true);
+                return;
+            }
+            showError(false);
+
+            let db = getDatabase();
+            // Initialize if new, increment if exists
+            db[phone] = (db[phone] || 0) + 1;
+            saveDatabase(db);
+
+            updateDashboard(db[phone], true);
+        }
+
+        function checkStatus() {
+            const phone = getPhoneNumber();
+            if (phone.length < 7) {
+                showError(true);
+                return;
+            }
+            showError(false);
+
+            let db = getDatabase();
+            let visits = db[phone] || 0;
+            
+            updateDashboard(visits, false);
+        }
+
+        // --- UI Updates ---
+        function updateDashboard(totalVisits, justLogged) {
+            const dashboard = document.getElementById('dashboard');
+            const totalVisitsEl = document.getElementById('totalVisits');
+            const punchHolesEl = document.getElementById('punchHoles');
+            const statusMessageEl = document.getElementById('statusMessage');
+
+            // Show dashboard
+            dashboard.classList.remove('hidden');
+            
+            // Re-trigger animation
+            dashboard.classList.remove('animate-pop');
+            void dashboard.offsetWidth; // trigger reflow
+            dashboard.classList.add('animate-pop');
+
+            totalVisitsEl.textContent = totalVisits;
+
+            // Calculate progress (1 to 5)
+            let currentProgress = totalVisits % 5;
+            if (currentProgress === 0 && totalVisits > 0) currentProgress = 5;
+
+            // Generate Punch Holes
+            punchHolesEl.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                const hole = document.createElement('div');
+                hole.className = 'w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-lg border-2 transition-all duration-300';
+                
+                if (i < currentProgress) {
+                    // Past visits
+                    hole.classList.add('bg-rose-100', 'border-rose-200', 'text-rose-400');
+                    hole.innerHTML = '✓';
+                } else if (i === currentProgress) {
+                    // Current visit
+                    hole.classList.add('bg-rose-500', 'border-rose-500', 'text-white', 'shadow-lg', 'shadow-rose-200');
+                    hole.innerHTML = i === 5 ? '🎁' : i;
+                } else {
+                    // Future visits
+                    hole.classList.add('bg-slate-50', 'border-slate-200', 'text-slate-300');
+                    hole.innerHTML = i === 5 ? '🎁' : i;
+                }
+                punchHolesEl.appendChild(hole);
+            }
+
+            // Update Status Message
+            statusMessageEl.className = 'text-center p-4 rounded-xl font-medium transition-all duration-300 ';
+            
+            if (currentProgress === 5) {
+                statusMessageEl.classList.add('bg-green-100', 'text-green-800', 'border', 'border-green-200');
+                statusMessageEl.innerHTML = justLogged 
+                    ? '🎉 <strong>50% OFF UNLOCKED!</strong><br><span class="text-sm">Apply discount to today\'s service!</span>' 
+                    : '🎉 <strong>Reward Available!</strong><br><span class="text-sm">Client gets 50% off today.</span>';
+            } else {
+                statusMessageEl.classList.add('bg-slate-50', 'text-slate-600');
+                const remaining = 5 - currentProgress;
+                statusMessageEl.innerHTML = justLogged
+                    ? `Visit logged! <strong>${remaining} more</strong> until 50% off.`
+                    : `Client needs <strong>${remaining} more</strong> visits for 50% off.`;
+            }
+
+            // Optionally clear the input box to get ready for the next customer
+            if (justLogged) {
+                setTimeout(() => {
+                    document.getElementById('phone').value = '';
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
