@@ -14,55 +14,149 @@
         .animate-pop {
             animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
+
+        /* Black & White Checkerboard Background */
+        .checker-bg {
+            background-color: #ffffff;
+            background-image: 
+                linear-gradient(45deg, #000000 25%, transparent 25%, transparent 75%, #000000 75%, #000000),
+                linear-gradient(45deg, #000000 25%, transparent 25%, transparent 75%, #000000 75%, #000000);
+            background-size: 80px 80px;
+            background-position: 0 0, 40px 40px;
+        }
+
+        /* 3D Glossy Red Effect */
+        .glossy-red {
+            background: linear-gradient(to bottom, #ff1a1a 0%, #e60000 40%, #990000 100%);
+            border: 2px solid #ff9999;
+            box-shadow: 
+                0 8px 15px rgba(0,0,0,0.9), 
+                inset 0 3px 6px rgba(255,255,255,0.6), 
+                inset 0 -5px 10px rgba(100,0,0,0.8),
+                0 0 25px rgba(255, 26, 26, 0.7);
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+        }
+        .glossy-red:active {
+            box-shadow: 
+                0 2px 4px rgba(0,0,0,0.9), 
+                inset 0 4px 8px rgba(0,0,0,0.8);
+            transform: translateY(4px);
+        }
+
+        /* 3D App Container */
+        .container-3d {
+            box-shadow: 
+                0 30px 60px rgba(0,0,0,0.95),
+                0 0 50px rgba(255, 26, 26, 0.5),
+                inset 0 0 30px rgba(255, 255, 255, 0.05);
+        }
+
+        /* Custom Dropdown styling */
+        select option {
+            background-color: #0a0a0a;
+            color: #fff;
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-pink-50 to-rose-100 min-h-screen flex items-center justify-center p-4 font-sans text-slate-800">
+<body class="checker-bg min-h-screen flex items-center justify-center p-4 font-sans text-gray-200 relative overflow-hidden">
 
-    <div class="bg-white rounded-3xl shadow-xl border border-rose-50 w-full max-w-md p-6 sm:p-8 relative overflow-hidden">
+    <!-- Decorative Stars Matching Image 1 -->
+    <!-- Top Right Cluster -->
+    <svg viewBox="0 0 100 100" class="absolute top-4 right-12 w-32 h-32 text-[#ff1a1a] drop-shadow-[0_0_15px_rgba(255,26,26,0.8)] z-0" fill="currentColor">
+        <path d="M50 0 Q50 40 10 50 Q50 60 50 100 Q50 60 90 50 Q50 40 50 0 Z" />
+    </svg>
+    <svg viewBox="0 0 100 100" class="absolute top-24 right-40 w-16 h-16 text-[#ff1a1a] drop-shadow-[0_0_10px_rgba(255,26,26,0.8)] z-0" fill="currentColor">
+        <path d="M50 0 Q50 40 10 50 Q50 60 50 100 Q50 60 90 50 Q50 40 50 0 Z" />
+    </svg>
+
+    <!-- Bottom Left Cluster -->
+    <svg viewBox="0 0 100 100" class="absolute bottom-8 left-8 w-40 h-40 text-[#ff1a1a] drop-shadow-[0_0_20px_rgba(255,26,26,0.8)] z-0" fill="currentColor">
+        <path d="M50 0 Q50 40 10 50 Q50 60 50 100 Q50 60 90 50 Q50 40 50 0 Z" />
+    </svg>
+    <svg viewBox="0 0 100 100" class="absolute bottom-32 left-32 w-16 h-16 text-[#ff1a1a] drop-shadow-[0_0_10px_rgba(255,26,26,0.8)] z-0" fill="currentColor">
+        <path d="M50 0 Q50 40 10 50 Q50 60 50 100 Q50 60 90 50 Q50 40 50 0 Z" />
+    </svg>
+    <svg viewBox="0 0 100 100" class="absolute bottom-4 left-48 w-12 h-12 text-[#FFEA00] drop-shadow-[0_0_15px_rgba(255,234,0,0.8)] z-0" fill="currentColor">
+        <path d="M50 0 Q50 40 10 50 Q50 60 50 100 Q50 60 90 50 Q50 40 50 0 Z" />
+    </svg>
+
+    <!-- Middle Right Yellow Star -->
+    <svg viewBox="0 0 100 100" class="absolute top-1/2 right-24 w-12 h-12 text-[#FFEA00] drop-shadow-[0_0_20px_rgba(255,234,0,0.9)] z-0 transform -translate-y-1/2" fill="currentColor">
+        <path d="M50 0 Q50 40 10 50 Q50 60 50 100 Q50 60 90 50 Q50 40 50 0 Z" />
+    </svg>
+
+    <!-- Main App Container -->
+    <div class="container-3d bg-[#050505] rounded-[2rem] border-4 border-[#ff1a1a] w-full max-w-md p-6 sm:p-8 relative z-10">
         
         <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-2xl font-bold text-rose-600 mb-1">Lash Loyalty Tracker</h1>
-            <p class="text-sm text-slate-500">Every 5th visit gets 50% off</p>
+        <div class="text-center mb-6">
+            <!-- Custom Logo Insertion (Clickable) -->
+            <div class="flex justify-center mb-4 relative group cursor-pointer w-28 h-28 mx-auto" onclick="document.getElementById('logoUpload').click()">
+                <img id="logoImage" src="https://placehold.co/200x200/FFEA00/000000?text=TAP+TO+ADD+LOGO" alt="Salon Logo" class="h-28 w-28 object-cover bg-[#FFEA00] drop-shadow-[0_0_20px_rgba(255,234,0,0.4)] rounded-full border-2 border-dashed border-[#FFEA00] group-hover:border-white transition-all duration-300">
+                
+                <!-- Hover/Active overlay for visual feedback -->
+                <div class="absolute inset-0 flex items-center justify-center bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span class="text-[10px] text-white font-bold uppercase tracking-widest text-center px-2">Change Logo</span>
+                </div>
+                
+                <!-- Hidden file input -->
+                <input type="file" id="logoUpload" class="hidden" accept="image/*" onchange="handleLogoUpload(event)">
+            </div>
+
+            <h1 class="text-4xl font-bold text-[#ff1a1a] mb-1 tracking-widest uppercase drop-shadow-[0_0_10px_rgba(255,26,26,0.6)]" style="font-family: 'Georgia', serif; -webkit-text-stroke: 1px #660000; text-shadow: 2px 2px 0px #440000;">
+                Lash Loyalty
+            </h1>
+        </div>
+
+        <!-- Promotion Selector -->
+        <div class="mb-6 bg-zinc-900/50 p-3 rounded-xl border border-zinc-800">
+            <label for="promoSelect" class="block text-xs font-bold text-[#FFEA00] drop-shadow-[0_0_5px_rgba(255,234,0,0.5)] mb-2 uppercase tracking-wider">Current Promotion</label>
+            <select id="promoSelect" class="w-full bg-black border border-red-900 text-white text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block p-2.5 shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] font-medium" onchange="handlePromoChange()">
+                <option value="promo50">50% OFF Every 5th Visit</option>
+                <option value="promo10">10% OFF Every 2nd Visit</option>
+                <option value="promoBath">FREE Lash Bath on 3rd Visit</option>
+                <option value="promo20">10 Visits = $20 OFF</option>
+            </select>
         </div>
 
         <!-- Error Message Container -->
-        <div id="errorMessage" class="hidden mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-xl border border-red-100 text-center transition-all">
+        <div id="errorMessage" class="hidden mb-4 p-3 bg-black text-red-500 text-sm rounded-xl border border-red-900 text-center transition-all shadow-[0_0_10px_rgba(220,38,38,0.2)]">
             Please enter a valid phone number.
         </div>
 
         <!-- Input Section -->
         <div class="mb-6">
-            <label for="phone" class="block text-sm font-medium text-slate-600 mb-2">Client Phone Number</label>
+            <label for="phone" class="block text-xs font-bold text-zinc-400 mb-2 uppercase tracking-wider">Client Phone Number</label>
             <input type="tel" id="phone" placeholder="(555) 555-5555" 
-                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:border-transparent text-lg transition-all placeholder:text-slate-300"
+                class="w-full px-4 py-3 rounded-xl border-2 border-zinc-800 bg-[#0a0a0a] focus:outline-none focus:ring-0 focus:border-[#ff3333] text-lg transition-all placeholder:text-zinc-700 text-white shadow-[inset_0_4px_8px_rgba(0,0,0,0.8)] font-bold tracking-widest text-center"
                 onkeypress="handleKeyPress(event)">
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex gap-3 mb-8">
-            <button onclick="logVisit()" class="flex-1 bg-rose-500 hover:bg-rose-600 text-white font-semibold py-3 px-4 rounded-xl transition-all active:scale-95 shadow-md shadow-rose-200">
-                Log Visit
+        <div class="flex gap-3 mb-6">
+            <button onclick="logVisit()" class="flex-1 glossy-red font-bold tracking-wide py-3 px-2 rounded-xl text-sm sm:text-base">
+                LOG VISIT
             </button>
-            <button onclick="checkStatus()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-xl transition-all active:scale-95">
-                Check Status
+            <button onclick="checkStatus()" class="flex-1 bg-gradient-to-b from-zinc-700 to-zinc-900 hover:from-zinc-600 hover:to-zinc-800 text-white font-bold tracking-wide py-3 px-2 rounded-xl transition-all active:scale-95 border border-zinc-600 shadow-[0_4px_6px_rgba(0,0,0,0.6),inset_0_2px_4px_rgba(255,255,255,0.2)] text-sm sm:text-base">
+                STATUS
             </button>
         </div>
 
         <!-- Results / Dashboard Area -->
-        <div id="dashboard" class="hidden animate-pop border-t border-slate-100 pt-6">
-            <div class="text-center mb-4">
-                <span class="text-sm font-medium text-slate-500 uppercase tracking-wider">Total Visits: <span id="totalVisits" class="text-rose-600 font-bold text-lg">0</span></span>
+        <div id="dashboard" class="hidden animate-pop border-t-2 border-dashed border-zinc-800 pt-6">
+            <div class="text-center mb-4 flex justify-between items-center px-2">
+                <span class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Total History: <span id="totalVisits" class="text-white">0</span></span>
+                <span class="text-xs font-bold text-[#FFEA00] drop-shadow-[0_0_5px_rgba(255,234,0,0.5)] uppercase tracking-wider bg-[#FFEA00]/10 px-2 py-1 rounded border border-[#FFEA00]/40" id="promoGoalText">Goal: 5 Visits</span>
             </div>
 
             <!-- Punch Card Visualization -->
-            <div class="flex justify-between items-center mb-6 px-2">
+            <div id="punchHoles" class="flex flex-wrap justify-center gap-3 mb-6 px-2">
                 <!-- Javascript will generate the punch holes here -->
-                <div id="punchHoles" class="flex w-full justify-between gap-2"></div>
             </div>
 
             <!-- Status / Reward Message -->
-            <div id="statusMessage" class="text-center p-4 rounded-xl font-medium">
+            <div id="statusMessage" class="text-center p-4 rounded-xl font-bold uppercase tracking-wider">
                 <!-- Message injected via JS -->
             </div>
         </div>
@@ -70,13 +164,20 @@
     </div>
 
     <script>
+        // --- Promotion Configurations ---
+        const promotions = {
+            promo50: { visits: 5, reward: "50% OFF", desc: "50% off service!" },
+            promo10: { visits: 2, reward: "10% OFF", desc: "10% off service!" },
+            promoBath: { visits: 3, reward: "FREE BATH", desc: "Free Lash Bath!" },
+            promo20: { visits: 10, reward: "$20 OFF", desc: "$20 off service!" }
+        };
+
+        let currentPhoneLookup = "";
+
         // --- Data Management (Local Storage) ---
         function getDatabase() {
-            try {
-                return JSON.parse(localStorage.getItem('lashClientsDB')) || {};
-            } catch (e) {
-                return {};
-            }
+            try { return JSON.parse(localStorage.getItem('lashClientsDB')) || {}; } 
+            catch (e) { return {}; }
         }
 
         function saveDatabase(db) {
@@ -85,7 +186,6 @@
 
         // --- Utility Functions ---
         function getPhoneNumber() {
-            // Strip out everything except numbers
             const raw = document.getElementById('phone').value;
             return raw.replace(/\D/g, '');
         }
@@ -101,22 +201,85 @@
         }
 
         function handleKeyPress(e) {
-            if (e.key === 'Enter') {
-                logVisit();
+            if (e.key === 'Enter') logVisit();
+        }
+
+        function handlePromoChange() {
+            // If we are currently looking at a client, refresh their dashboard to show new promo math
+            if (currentPhoneLookup && !document.getElementById('dashboard').classList.contains('hidden')) {
+                let db = getDatabase();
+                updateDashboard(db[currentPhoneLookup] || 0, false);
             }
         }
+
+        // --- Logo Upload & Storage Logic ---
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    // Resize image using a canvas to prevent hitting localStorage size limits
+                    const canvas = document.createElement('canvas');
+                    const MAX_SIZE = 300; // max width/height
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_SIZE) {
+                            height *= MAX_SIZE / width;
+                            width = MAX_SIZE;
+                        }
+                    } else {
+                        if (height > MAX_SIZE) {
+                            width *= MAX_SIZE / height;
+                            height = MAX_SIZE;
+                        }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Convert to base64 and save
+                    const dataUrl = canvas.toDataURL('image/png');
+                    const logoEl = document.getElementById('logoImage');
+                    logoEl.src = dataUrl;
+                    logoEl.classList.remove('border-dashed'); // Remove dashed border once an image is set
+                    
+                    try {
+                        localStorage.setItem('lashLogoDB', dataUrl);
+                    } catch (err) {
+                        alert("Storage limit reached. Try a smaller image file.");
+                    }
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load saved logo if it exists
+            const savedLogo = localStorage.getItem('lashLogoDB');
+            if (savedLogo) {
+                const logoEl = document.getElementById('logoImage');
+                logoEl.src = savedLogo;
+                logoEl.classList.remove('border-dashed');
+            }
+        });
 
         // --- Core Application Logic ---
         function logVisit() {
             const phone = getPhoneNumber();
-            if (phone.length < 7) {
-                showError(true);
-                return;
-            }
+            if (phone.length < 7) return showError(true);
             showError(false);
+            currentPhoneLookup = phone;
 
             let db = getDatabase();
-            // Initialize if new, increment if exists
             db[phone] = (db[phone] || 0) + 1;
             saveDatabase(db);
 
@@ -125,16 +288,12 @@
 
         function checkStatus() {
             const phone = getPhoneNumber();
-            if (phone.length < 7) {
-                showError(true);
-                return;
-            }
+            if (phone.length < 7) return showError(true);
             showError(false);
+            currentPhoneLookup = phone;
 
             let db = getDatabase();
-            let visits = db[phone] || 0;
-            
-            updateDashboard(visits, false);
+            updateDashboard(db[phone] || 0, false);
         }
 
         // --- UI Updates ---
@@ -143,64 +302,67 @@
             const totalVisitsEl = document.getElementById('totalVisits');
             const punchHolesEl = document.getElementById('punchHoles');
             const statusMessageEl = document.getElementById('statusMessage');
-
-            // Show dashboard
-            dashboard.classList.remove('hidden');
             
-            // Re-trigger animation
+            // Get Active Promotion
+            const promoKey = document.getElementById('promoSelect').value;
+            const activePromo = promotions[promoKey];
+
+            document.getElementById('promoGoalText').textContent = `Goal: ${activePromo.visits} Visits`;
+
+            // Show dashboard and animate
+            dashboard.classList.remove('hidden');
             dashboard.classList.remove('animate-pop');
-            void dashboard.offsetWidth; // trigger reflow
+            void dashboard.offsetWidth; 
             dashboard.classList.add('animate-pop');
 
             totalVisitsEl.textContent = totalVisits;
 
-            // Calculate progress (1 to 5)
-            let currentProgress = totalVisits % 5;
-            if (currentProgress === 0 && totalVisits > 0) currentProgress = 5;
+            // Calculate progress based on the dynamic promo goal
+            let currentProgress = totalVisits % activePromo.visits;
+            if (currentProgress === 0 && totalVisits > 0) currentProgress = activePromo.visits;
 
-            // Generate Punch Holes
+            // Generate Punch Holes Dynamically
             punchHolesEl.innerHTML = '';
-            for (let i = 1; i <= 5; i++) {
+            for (let i = 1; i <= activePromo.visits; i++) {
                 const hole = document.createElement('div');
-                hole.className = 'w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-lg border-2 transition-all duration-300';
+                // Adjust size if there are 10 holes to fit them all
+                const sizeClasses = activePromo.visits > 5 ? 'w-8 h-8 text-sm sm:w-10 sm:h-10' : 'w-10 h-10 sm:w-12 sm:h-12 text-lg';
+                hole.className = `${sizeClasses} rounded-full flex items-center justify-center font-bold border-2 transition-all duration-300`;
                 
                 if (i < currentProgress) {
                     // Past visits
-                    hole.classList.add('bg-rose-100', 'border-rose-200', 'text-rose-400');
+                    hole.classList.add('bg-[#1a0000]', 'border-[#800000]', 'text-[#ff1a1a]', 'shadow-[inset_0_4px_8px_rgba(0,0,0,0.8)]');
                     hole.innerHTML = '✓';
                 } else if (i === currentProgress) {
-                    // Current visit
-                    hole.classList.add('bg-rose-500', 'border-rose-500', 'text-white', 'shadow-lg', 'shadow-rose-200');
-                    hole.innerHTML = i === 5 ? '🎁' : i;
+                    // Current visit (if logged today)
+                    hole.classList.add('glossy-red');
+                    hole.innerHTML = i === activePromo.visits ? '🎁' : i;
                 } else {
                     // Future visits
-                    hole.classList.add('bg-slate-50', 'border-slate-200', 'text-slate-300');
-                    hole.innerHTML = i === 5 ? '🎁' : i;
+                    hole.classList.add('bg-black', 'border-zinc-800', 'text-zinc-700', 'shadow-[inset_0_4px_8px_rgba(0,0,0,0.8)]');
+                    hole.innerHTML = i === activePromo.visits ? '🎁' : i;
                 }
                 punchHolesEl.appendChild(hole);
             }
 
-            // Update Status Message
-            statusMessageEl.className = 'text-center p-4 rounded-xl font-medium transition-all duration-300 ';
+            // Update Status Message dynamically
+            statusMessageEl.className = 'text-center p-4 rounded-xl font-bold uppercase tracking-wider transition-all duration-300 ';
             
-            if (currentProgress === 5) {
-                statusMessageEl.classList.add('bg-green-100', 'text-green-800', 'border', 'border-green-200');
+            if (currentProgress === activePromo.visits) {
+                statusMessageEl.classList.add('bg-[#1a0000]', 'text-red-200', 'border', 'border-[#ff1a1a]', 'shadow-[0_0_15px_rgba(255,26,26,0.3)]');
                 statusMessageEl.innerHTML = justLogged 
-                    ? '🎉 <strong>50% OFF UNLOCKED!</strong><br><span class="text-sm">Apply discount to today\'s service!</span>' 
-                    : '🎉 <strong>Reward Available!</strong><br><span class="text-sm">Client gets 50% off today.</span>';
+                    ? `🎉 <strong class="text-[#ff1a1a] text-lg">${activePromo.reward} UNLOCKED!</strong><br><span class="text-xs text-zinc-400 normal-case tracking-normal">Apply discount today!</span>` 
+                    : `🎉 <strong class="text-[#ff1a1a] text-lg">Reward Available!</strong><br><span class="text-xs text-zinc-400 normal-case tracking-normal">Client gets ${activePromo.desc}</span>`;
             } else {
-                statusMessageEl.classList.add('bg-slate-50', 'text-slate-600');
-                const remaining = 5 - currentProgress;
+                statusMessageEl.classList.add('bg-black', 'text-zinc-500', 'border', 'border-zinc-800', 'shadow-[inset_0_4px_8px_rgba(0,0,0,0.5)]');
+                const remaining = activePromo.visits - currentProgress;
                 statusMessageEl.innerHTML = justLogged
-                    ? `Visit logged! <strong>${remaining} more</strong> until 50% off.`
-                    : `Client needs <strong>${remaining} more</strong> visits for 50% off.`;
+                    ? `Visit logged. <strong class="text-white">${remaining} more</strong> until reward.`
+                    : `<strong class="text-white">${remaining} more</strong> visits for reward.`;
             }
 
-            // Optionally clear the input box to get ready for the next customer
             if (justLogged) {
-                setTimeout(() => {
-                    document.getElementById('phone').value = '';
-                }, 2000);
+                setTimeout(() => { document.getElementById('phone').value = ''; }, 2000);
             }
         }
     </script>
